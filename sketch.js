@@ -275,7 +275,7 @@ function updateAndDrawHorizontalLines() {
 
 function keyPressed() {
   updateCurrentImage(key);
-  if ((key === 's' || key === 'S') && alpha03 >= 255) {
+  if ((key === 'w' || key === 'W') && alpha03 >= 255) {
     fadeOut01 = true;
   }
 }
@@ -288,9 +288,9 @@ function keyReleased() {
 
 function updateCurrentImage(k) {
   switch (k.toLowerCase()) {
-    case 'w': currentImg = wImg; break;
+    case 's': currentImg = wImg; break;
     case 'a': currentImg = aImg; break;
-    case 's': currentImg = sImg; break;
+    case 'w': currentImg = sImg; break;
     case 'd': currentImg = dImg; break;
   }
 }
