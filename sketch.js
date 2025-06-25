@@ -41,6 +41,10 @@ let img011FullyShownTime = null;
 // 新增控制013.png
 let showImg013 = false;
 
+// 添加新的变量来跟踪所有动画是否结束
+let allAnimationsComplete = false;
+let img013HiddenTime = null;
+
 function preload() {
   defaultImg = loadImage('wasd2.png');
   wImg = loadImage('W2.png');
@@ -227,6 +231,23 @@ function draw() {
   if (showImg013) {
     image(img013, 0, 0, width, height);
   }
+
+  // 检查所有动画是否完成
+  // 当013.png被隐藏后，等待2秒后标记为完成
+  if (!showImg013 && img013HiddenTime !== null && 
+      millis() - img013HiddenTime > 2000 && !allAnimationsComplete) {
+    allAnimationsComplete = true;
+  }
+
+  // 如果所有动画完成，显示点击提示（可选）
+  if (allAnimationsComplete) {
+    // 可以在这里添加视觉提示，比如闪烁的文字或图标
+    // 例如：
+    // fill(255, 255, 255, 150 + 100 * sin(millis() * 0.01));
+    // textAlign(CENTER);
+    // textSize(32);
+    // text("点击屏幕继续", width/2, height - 50);
+  }
 }
 
 function drawVerticalLines() {
@@ -288,19 +309,27 @@ function keyReleased() {
 
 function updateCurrentImage(k) {
   switch (k.toLowerCase()) {
-    case 's': currentImg = wImg; break;
+    case 'w': currentImg = wImg; break;
     case 'a': currentImg = aImg; break;
-    case 'w': currentImg = sImg; break;
+    case 's': currentImg = sImg; break;
     case 'd': currentImg = dImg; break;
   }
 }
 
 function mousePressed() {
+  // 检查是否所有动画已完成，如果是则跳转链接
+  if (allAnimationsComplete) {
+    window.location.href = 'https://springtaylor.github.io/middle3';
+    return; // 直接返回，不执行下面的原有逻辑
+  }
+
   // 检测点击013.png的区域
   let distanceToCenter = dist(mouseX, mouseY, 660, 940);
   if (distanceToCenter <= 60 && showImg013) {
     showImg013 = false; // 点击区域内时隐藏013.png
     img08 = img09; // ✅ 013消失后更新08.png为09.png
+    img013HiddenTime = millis(); // 记录013.png隐藏的时间
+    return; // 执行了这个逻辑后直接返回
   }
 
   if (mouseX >= 1000 && mouseX <= 1160 && mouseY >= 420 && mouseY <= 700) {
